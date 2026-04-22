@@ -39,17 +39,32 @@ const craftVideos = [
 ];
 
 /* ════════════════════════════════════════════════════════════
-   SCROLL REVEAL HOOK
-   Jab element viewport mein aaye → 'revealed' class lagao
+   SCROLL REVEAL HOOK — FIXED
    ════════════════════════════════════════════════════════════ */
-function useScrollReveal(options = {}) {
+function useScrollReveal() {
   const ref = useRef(null);
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+
+    // Already visible on mount (above fold)? Reveal immediately.
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight) {
+      el.classList.add('revealed');
+      return;
+    }
+
     const obs = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { el.classList.add('revealed'); obs.unobserve(el); } },
-      { threshold: options.threshold || 0.1, rootMargin: options.rootMargin || '0px 0px -60px 0px' }
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.classList.add('revealed');
+          obs.unobserve(el);
+        }
+      },
+      {
+        threshold: 0,       // sirf 1px dikhte hi trigger
+        rootMargin: '0px',  // no negative margin
+      }
     );
     obs.observe(el);
     return () => obs.disconnect();
@@ -57,7 +72,7 @@ function useScrollReveal(options = {}) {
   return ref;
 }
 
-/* Convenience wrapper — apply to any section div */
+/* Convenience wrapper */
 function Reveal({ children, delay = 0, style = {}, className = '', tag: Tag = 'div' }) {
   const ref = useScrollReveal();
   return (
@@ -212,7 +227,7 @@ function CraftPanel({ src, tag, title, isLast }) {
 }
 
 /* ════════════════════════════════════════════════════════════
-   STYLES — original + scroll reveal additions
+   STYLES — scroll reveal FIXED
    ════════════════════════════════════════════════════════════ */
 const mobileStyles = `
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=DM+Sans:wght@300;400;500&display=swap');
@@ -235,14 +250,13 @@ const mobileStyles = `
   html { scroll-behavior: smooth; }
   body { font-family: var(--sans); background: var(--cream-0); color: var(--ink-2); -webkit-font-smoothing: antialiased; }
 
-  /* ── SCROLL REVEAL ── */
+  /* ── SCROLL REVEAL — FIXED ── */
   .scroll-reveal {
     opacity: 0;
-    transform: translateY(44px);
+    transform: translateY(32px);
     transition:
-      opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
-      transform 0.75s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms);
-    will-change: opacity, transform;
+      opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
+      transform 0.65s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms);
   }
   .scroll-reveal.revealed {
     opacity: 1;
@@ -251,10 +265,10 @@ const mobileStyles = `
   /* Stagger children inside a revealed parent */
   .reveal-children > * {
     opacity: 0;
-    transform: translateY(36px);
+    transform: translateY(28px);
     transition:
-      opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
-      transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+      opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .reveal-children.revealed > *:nth-child(1) { opacity:1; transform:none; transition-delay: 0ms; }
   .reveal-children.revealed > *:nth-child(2) { opacity:1; transform:none; transition-delay: 90ms; }
