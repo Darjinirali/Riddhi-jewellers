@@ -1,0 +1,232 @@
+:root {
+  --primary: #b8860b;
+  --primary-dark: #9a720a;
+  --primary-light: #d4af37;
+  --bg-dark: #fdf9f4;
+  --bg-dark2: #f5efe6;
+  --bg-light: #ffffff;
+  --text-light: #1a1a1a;
+  --text-dim: #3d3d3d;
+  --text-dark: #111111;
+  --text-gray: #6b6b6b;
+  --border: #e8d9c0;
+  --card-bg: #ffffff;
+  --success: #16a34a;
+  --error: #dc2626;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+  --shadow-md: 0 8px 24px rgba(0,0,0,0.08);
+  --shadow-lg: 0 20px 50px rgba(0,0,0,0.10);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: var(--bg-dark);
+  color: var(--text-light);
+  overflow-x: hidden;
+  width: 100%;
+}
+
+header,
+.admin-header,
+.navbar,
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1100;
+  background-color: var(--bg-light);
+}
+
+body {
+  padding-top: 78px;
+}
+
+html {
+  scroll-padding-top: 78px;
+}
+
+.admin-content,
+.messages-container,
+.page-container {
+  padding-top: 10px;
+}
+
+a { text-decoration: none; color: inherit; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-dark2); }
+::-webkit-scrollbar-thumb { background: var(--primary-light); border-radius: 3px; }
+
+/* Buttons */
+.btn {
+  padding: 12px 28px;
+  border-radius: 30px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Montserrat', sans-serif;
+  letter-spacing: 0.5px;
+}
+.btn-primary { background: var(--primary); color: #fff; border: 2px solid var(--primary); }
+.btn-primary:hover { background: var(--primary-dark); border-color: var(--primary-dark); }
+.btn-secondary { background: transparent; color: var(--text-light); border: 2px solid #d0bfa0; }
+.btn-secondary:hover { border-color: var(--primary); color: var(--primary); }
+.btn-outline { background: transparent; color: var(--primary); border: 2px solid var(--primary); }
+.btn-outline:hover { background: var(--primary); color: #fff; }
+
+/* Section header */
+.section-header { text-align: center; margin-bottom: 60px; }
+.section-header .subtitle {
+  color: var(--primary);
+  font-size: 0.75rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 15px;
+  font-weight: 500;
+}
+.section-header h2 {
+  font-family: 'Bodoni Moda', serif;
+  font-size: 2.8rem;
+  line-height: 1.2;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+.section-header h2 .highlight { color: var(--primary); }
+
+/* Form styles */
+.form-group { margin-bottom: 20px; }
+.form-group label { display: block; font-size: 0.85rem; color: var(--text-dim); margin-bottom: 8px; letter-spacing: 0.5px; }
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 12px 16px;
+  background: #faf7f2;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-light);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.9rem;
+  transition: border-color 0.3s;
+  outline: none;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(184,134,11,0.08); }
+.form-group textarea { resize: vertical; min-height: 100px; }
+
+/* Badge */
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+.badge-gold { background: rgba(184,134,11,0.10); color: var(--primary); border: 1px solid rgba(184,134,11,0.25); }
+.badge-green { background: rgba(22,163,74,0.10); color: #16a34a; }
+.badge-red { background: rgba(220,38,38,0.10); color: #dc2626; }
+.badge-blue { background: rgba(37,99,235,0.10); color: #2563eb; }
+.badge-gray { background: rgba(100,100,100,0.10); color: #777; }
+
+/* Loading spinner */
+.spinner {
+  width: 40px; height: 40px;
+  border: 3px solid var(--border);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 40px auto;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Page container */
+.page-container { max-width: 1280px; margin: 0 auto; padding: 0 5%; }
+
+/* Auth pages */
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #fdf9f4 0%, #f5efe6 100%);
+  padding: 40px 20px;
+}
+.auth-card {
+  background: var(--card-bg);
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  padding: 48px 40px;
+  width: 100%;
+  max-width: 460px;
+  box-shadow: var(--shadow-lg);
+}
+.auth-card h2 {
+  font-family: 'Bodoni Moda', serif;
+  font-size: 2rem;
+  margin-bottom: 8px;
+  color: var(--text-dark);
+}
+.auth-card .subtitle { color: var(--text-gray); font-size: 0.9rem; margin-bottom: 32px; }
+.auth-card .auth-footer { text-align: center; margin-top: 24px; color: var(--text-dim); font-size: 0.85rem; }
+.auth-card .auth-footer a { color: var(--primary); }
+.auth-card .logo-link {
+  display: flex; align-items: center; gap: 8px;
+  justify-content: center; margin-bottom: 32px;
+  font-family: 'Bodoni Moda', serif; font-size: 1.4rem; color: var(--primary);
+}
+
+/* OTP input */
+.otp-inputs { display: flex; gap: 12px; justify-content: center; margin: 24px 0; }
+.otp-inputs input {
+  width: 52px; height: 60px;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  background: #faf7f2;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  color: var(--text-light);
+  transition: border-color 0.2s;
+}
+.otp-inputs input:focus { border-color: var(--primary); outline: none; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .section-header h2 { font-size: 2rem; }
+  .auth-card { padding: 32px 24px; }
+  body { padding-top: 70px; }
+  html { scroll-padding-top: 70px; }
+}
+
+@media (max-width: 768px) {
+  section {
+    padding-top: 60px !important;
+    padding-bottom: 60px !important;
+  }
+  .section-header h2 { font-size: 1.8rem !important; }
+  .about-grid { grid-template-columns: 1fr !important; }
+  .store-grid { grid-template-columns: 1fr !important; }
+  .otp-inputs input { width: 42px !important; height: 52px !important; font-size: 1.2rem !important; }
+  .auth-card { margin: 0 12px; }
+  .newsletter-form { flex-direction: column !important; }
+  .newsletter-form input { border-radius: 8px !important; border-right: 1px solid #e0d0b8 !important; margin-bottom: 8px; }
+  .newsletter-form button { border-radius: 8px !important; width: 100%; padding: 14px !important; }
+}
+
+@media (max-width: 480px) {
+  .section-header h2 { font-size: 1.5rem !important; }
+  .btn { padding: 12px 20px !important; font-size: 0.85rem !important; }
+  .hero-stats { gap: 20px !important; }
+  iframe[title="Riddhi Jewellers Craftsmanship"] { height: 200px !important; }
+}
