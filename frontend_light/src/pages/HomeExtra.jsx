@@ -64,134 +64,124 @@ export function EMICalculator() {
 
 const quizSteps = [
   {
-    q: 'Kis ke liye gift hai?',
+    q: 'Who is this gift for?',
     options: ['Wife / Partner', 'Mother', 'Sister / Friend', 'Daughter', 'Men (Husband/Brother)'],
   },
   {
-    q: 'Kaunsa occasion hai?',
+    q: 'What is the occasion?',
     options: ['Wedding / Engagement', 'Birthday', 'Anniversary', 'Just Because 💛'],
   },
   {
-    q: 'Budget kya hai?',
+    q: 'What is your budget?',
     options: ['Under ₹10,000', '₹10K – ₹50K', '₹50K – ₹2L', 'Above ₹2L'],
   },
 ];
 
-/**
- * ALL 12 COLLECTIONS:
- * bridal-jewellery | bangles | modern-wear | silver-collections
- * kids-collection   | pendant | diamond-magics | rings
- * earings           | mangalsutras | mens-collection | necklaces
- *
- * Key format: `${recipient}-${occasion}-${budgetGroup}`
- * budgetGroup: 0 = low (<10K), 1 = mid (10-50K), 2 = high (50K-2L), 3 = premium (>2L)
- * If no exact match → fallback by recipient+occasion, then recipient only, then default
- */
 const giftMap = {
   // ── WIFE / PARTNER (0) ──────────────────────────────
-  '0-0-0': { name: 'Rings',            desc: 'Ek pyaari si ring — engagement ki shuruaat',       slug: 'rings' },
-  '0-0-1': { name: 'Bridal Jewellery', desc: 'Complete bridal set for the big day',              slug: 'bridal-jewellery' },
-  '0-0-2': { name: 'Bridal Jewellery', desc: 'Luxurious bridal collection — shadi ki yaad',      slug: 'bridal-jewellery' },
-  '0-0-3': { name: 'Diamond Magics',   desc: 'Unmatched diamond pieces for your queen',          slug: 'diamond-magics' },
+  '0-0-0': { name: 'Rings',            desc: 'A sweet ring — the perfect start to forever',          slug: 'rings' },
+  '0-0-1': { name: 'Bridal Jewellery', desc: 'Complete bridal set for the big day',                  slug: 'bridal-jewellery' },
+  '0-0-2': { name: 'Bridal Jewellery', desc: 'Luxurious bridal collection — memories to cherish',    slug: 'bridal-jewellery' },
+  '0-0-3': { name: 'Diamond Magics',   desc: 'Unmatched diamond pieces for your queen',              slug: 'diamond-magics' },
 
-  '0-1-0': { name: 'Pendant',          desc: 'Cute pendant — dil se diya hua tuhfa',             slug: 'pendant' },
-  '0-1-1': { name: 'Earings',          desc: 'Beautiful earrings — birthday ka perfect gift',    slug: 'earings' },
-  '0-1-2': { name: 'Necklaces',        desc: 'Elegant necklace — birthday pe kuch special',      slug: 'necklaces' },
-  '0-1-3': { name: 'Diamond Magics',   desc: 'Premium diamonds — kyunki woh deserve karti hai',  slug: 'diamond-magics' },
+  '0-1-0': { name: 'Pendant',          desc: 'A cute pendant — a heartfelt gift from the soul',      slug: 'pendant' },
+  '0-1-1': { name: 'Earings',          desc: 'Beautiful earrings — the perfect birthday gift',       slug: 'earings' },
+  '0-1-2': { name: 'Necklaces',        desc: 'Elegant necklace — something special for her birthday', slug: 'necklaces' },
+  '0-1-3': { name: 'Diamond Magics',   desc: 'Premium diamonds — because she deserves it',           slug: 'diamond-magics' },
 
-  '0-2-0': { name: 'MangalSutras',     desc: 'Anniversary pe naya mangalsutra — ek vaada phir',  slug: 'mangalsutras' },
-  '0-2-1': { name: 'Bangles',          desc: 'Sone ki bangles — anniversary gift jo yaad rahe',  slug: 'bangles' },
-  '0-2-2': { name: 'Necklaces',        desc: 'Statement necklace — saal giraah mubarak',         slug: 'necklaces' },
-  '0-2-3': { name: 'Diamond Magics',   desc: 'Diamond collection — her anniversary deserves this', slug: 'diamond-magics' },
+  '0-2-0': { name: 'MangalSutras',     desc: 'A new mangalsutra on anniversary — a promise renewed', slug: 'mangalsutras' },
+  '0-2-1': { name: 'Bangles',          desc: 'Gold bangles — an anniversary gift she will remember', slug: 'bangles' },
+  '0-2-2': { name: 'Necklaces',        desc: 'Statement necklace — happy anniversary, my love',      slug: 'necklaces' },
+  '0-2-3': { name: 'Diamond Magics',   desc: 'Diamond collection — every anniversary deserves this', slug: 'diamond-magics' },
 
-  '0-3-0': { name: 'Pendant',          desc: 'Sirf pyaar ki wajah se — ek pyaara pendant',       slug: 'pendant' },
-  '0-3-1': { name: 'Earings',          desc: 'Surprise earrings — just because she smiled today', slug: 'earings' },
-  '0-3-2': { name: 'Modern Wear',      desc: 'Trendy modern jewellery — everyday glam',          slug: 'modern-wear' },
-  '0-3-3': { name: 'Diamond Magics',   desc: 'No reason needed for diamonds',                    slug: 'diamond-magics' },
+  '0-3-0': { name: 'Pendant',          desc: 'Just because — a lovely pendant for no reason at all', slug: 'pendant' },
+  '0-3-1': { name: 'Earings',          desc: 'Surprise earrings — just because she smiled today',    slug: 'earings' },
+  '0-3-2': { name: 'Modern Wear',      desc: 'Trendy modern jewellery — everyday glam',              slug: 'modern-wear' },
+  '0-3-3': { name: 'Diamond Magics',   desc: 'No reason needed for diamonds',                        slug: 'diamond-magics' },
 
   // ── MOTHER (1) ──────────────────────────────────────
-  '1-0-0': { name: 'Silver Collections', desc: 'Elegant silver — Maa ki shuddh pasand',         slug: 'silver-collections' },
-  '1-0-1': { name: 'Bangles',            desc: 'Traditional bangles — Maa ke liye shubh gift',  slug: 'bangles' },
-  '1-0-2': { name: 'Bangles',            desc: 'Premium gold bangles — Maa ki khushi',          slug: 'bangles' },
-  '1-0-3': { name: 'Necklaces',          desc: 'Grand necklace — Maa ka aashirwad, aapka pyaar', slug: 'necklaces' },
+  '1-0-0': { name: 'Silver Collections', desc: 'Elegant silver — a pure and timeless choice for Mom',   slug: 'silver-collections' },
+  '1-0-1': { name: 'Bangles',            desc: 'Traditional bangles — an auspicious gift for Mom',      slug: 'bangles' },
+  '1-0-2': { name: 'Bangles',            desc: 'Premium gold bangles — for Mom\'s happiness',           slug: 'bangles' },
+  '1-0-3': { name: 'Necklaces',          desc: 'Grand necklace — her blessings, your love',            slug: 'necklaces' },
 
-  '1-1-0': { name: 'Silver Collections', desc: 'Silver jewellery — Maa ka birthday special',   slug: 'silver-collections' },
-  '1-1-1': { name: 'Bangles',            desc: 'Gold bangles — Maa ke birthday ka perfect gift', slug: 'bangles' },
-  '1-1-2': { name: 'Necklaces',          desc: 'Beautiful necklace — Maa ke liye aaj kuch bada', slug: 'necklaces' },
-  '1-1-3': { name: 'Diamond Magics',     desc: 'Diamonds for Maa — she gave you everything',    slug: 'diamond-magics' },
+  '1-1-0': { name: 'Silver Collections', desc: 'Silver jewellery — a special birthday gift for Mom',   slug: 'silver-collections' },
+  '1-1-1': { name: 'Bangles',            desc: 'Gold bangles — the perfect birthday gift for Mom',     slug: 'bangles' },
+  '1-1-2': { name: 'Necklaces',          desc: 'Beautiful necklace — go big on Mom\'s birthday',       slug: 'necklaces' },
+  '1-1-3': { name: 'Diamond Magics',     desc: 'Diamonds for Mom — she gave you everything',           slug: 'diamond-magics' },
 
-  '1-2-0': { name: 'Silver Collections', desc: 'Silver set — Maa-Papa ki anniversary pe',       slug: 'silver-collections' },
-  '1-2-1': { name: 'Bangles',            desc: 'Classic bangles — anniversary gifting for Maa', slug: 'bangles' },
-  '1-2-2': { name: 'Bangles',            desc: 'Premium bangles — saal ka sabse khoobsurat din', slug: 'bangles' },
-  '1-2-3': { name: 'Necklaces',          desc: 'Grand necklace — Maa ka celebration',           slug: 'necklaces' },
+  '1-2-0': { name: 'Silver Collections', desc: 'Silver set — celebrate Mom & Dad\'s anniversary',      slug: 'silver-collections' },
+  '1-2-1': { name: 'Bangles',            desc: 'Classic bangles — anniversary gifting for Mom',        slug: 'bangles' },
+  '1-2-2': { name: 'Bangles',            desc: 'Premium bangles — the most beautiful day of the year', slug: 'bangles' },
+  '1-2-3': { name: 'Necklaces',          desc: 'Grand necklace — celebrate Mom in style',              slug: 'necklaces' },
 
-  '1-3-0': { name: 'Silver Collections', desc: 'Silver piece — Maa ke liye bina kisi wajah ke', slug: 'silver-collections' },
-  '1-3-1': { name: 'Bangles',            desc: 'Bangles — sirf Maa ko khush karne ke liye',     slug: 'bangles' },
-  '1-3-2': { name: 'Bangles',            desc: 'Beautiful bangles — Maa muskarayein',           slug: 'bangles' },
-  '1-3-3': { name: 'Necklaces',          desc: 'Stunning necklace — Maa ka surprise gift',      slug: 'necklaces' },
+  '1-3-0': { name: 'Silver Collections', desc: 'A silver piece — for Mom, just because',              slug: 'silver-collections' },
+  '1-3-1': { name: 'Bangles',            desc: 'Bangles — just to make Mom smile',                    slug: 'bangles' },
+  '1-3-2': { name: 'Bangles',            desc: 'Beautiful bangles — bring a smile to Mom\'s face',    slug: 'bangles' },
+  '1-3-3': { name: 'Necklaces',          desc: 'Stunning necklace — a surprise gift for Mom',         slug: 'necklaces' },
 
   // ── SISTER / FRIEND (2) ─────────────────────────────
-  '2-0-0': { name: 'Silver Collections', desc: 'Trendy silver — dost ki shaadi mein',           slug: 'silver-collections' },
-  '2-0-1': { name: 'Earings',            desc: 'Pretty earrings — wedding gift for bestie',     slug: 'earings' },
-  '2-0-2': { name: 'Bridal Jewellery',   desc: 'Bridal set — sister ki shaadi pe kuch grand',  slug: 'bridal-jewellery' },
-  '2-0-3': { name: 'Bridal Jewellery',   desc: 'Complete bridal jewellery — bahen ke liye best', slug: 'bridal-jewellery' },
+  '2-0-0': { name: 'Silver Collections', desc: 'Trendy silver — perfect for a friend\'s wedding',     slug: 'silver-collections' },
+  '2-0-1': { name: 'Earings',            desc: 'Pretty earrings — a wedding gift for your bestie',    slug: 'earings' },
+  '2-0-2': { name: 'Bridal Jewellery',   desc: 'Bridal set — something grand for your sister\'s wedding', slug: 'bridal-jewellery' },
+  '2-0-3': { name: 'Bridal Jewellery',   desc: 'Complete bridal jewellery — only the best for her',  slug: 'bridal-jewellery' },
 
-  '2-1-0': { name: 'Silver Collections', desc: 'Silver jewellery — best friend birthday gift', slug: 'silver-collections' },
-  '2-1-1': { name: 'Earings',            desc: 'Stylish earrings — dost ki birthday surprise', slug: 'earings' },
-  '2-1-2': { name: 'Modern Wear',        desc: 'Modern trendy jewellery — yaar ke liye wow gift', slug: 'modern-wear' },
-  '2-1-3': { name: 'Diamond Magics',     desc: 'Diamonds — best friend deserves the best',     slug: 'diamond-magics' },
+  '2-1-0': { name: 'Silver Collections', desc: 'Silver jewellery — a birthday gift for your best friend', slug: 'silver-collections' },
+  '2-1-1': { name: 'Earings',            desc: 'Stylish earrings — a birthday surprise for her',     slug: 'earings' },
+  '2-1-2': { name: 'Modern Wear',        desc: 'Modern trendy jewellery — a wow gift for your bestie', slug: 'modern-wear' },
+  '2-1-3': { name: 'Diamond Magics',     desc: 'Diamonds — your best friend deserves the best',      slug: 'diamond-magics' },
 
-  '2-2-0': { name: 'Silver Collections', desc: 'Silver — dost ki anniversary pe cute gift',    slug: 'silver-collections' },
-  '2-2-1': { name: 'Earings',            desc: 'Beautiful earrings — anniversary celebration', slug: 'earings' },
-  '2-2-2': { name: 'Pendant',            desc: 'Elegant pendant — anniversary pe ek yaadgaar', slug: 'pendant' },
-  '2-2-3': { name: 'Necklaces',          desc: 'Premium necklace — bahen ki anniversary gift', slug: 'necklaces' },
+  '2-2-0': { name: 'Silver Collections', desc: 'Silver — a cute anniversary gift for your friend',   slug: 'silver-collections' },
+  '2-2-1': { name: 'Earings',            desc: 'Beautiful earrings — celebrate her anniversary',     slug: 'earings' },
+  '2-2-2': { name: 'Pendant',            desc: 'Elegant pendant — a memorable anniversary gift',     slug: 'pendant' },
+  '2-2-3': { name: 'Necklaces',          desc: 'Premium necklace — an anniversary gift for your sister', slug: 'necklaces' },
 
-  '2-3-0': { name: 'Silver Collections', desc: 'Cute silver piece — bestie ke liye surprise',  slug: 'silver-collections' },
-  '2-3-1': { name: 'Earings',            desc: 'Fun earrings — just because she is awesome',   slug: 'earings' },
-  '2-3-2': { name: 'Modern Wear',        desc: 'Trendy pick — dost ke liye no-reason gift',    slug: 'modern-wear' },
-  '2-3-3': { name: 'Diamond Magics',     desc: 'Diamonds — because she is your person',        slug: 'diamond-magics' },
+  '2-3-0': { name: 'Silver Collections', desc: 'A cute silver piece — a surprise for your bestie',  slug: 'silver-collections' },
+  '2-3-1': { name: 'Earings',            desc: 'Fun earrings — just because she is awesome',        slug: 'earings' },
+  '2-3-2': { name: 'Modern Wear',        desc: 'Trendy pick — a no-reason gift for your friend',    slug: 'modern-wear' },
+  '2-3-3': { name: 'Diamond Magics',     desc: 'Diamonds — because she is your person',            slug: 'diamond-magics' },
 
   // ── DAUGHTER (3) ────────────────────────────────────
-  '3-0-0': { name: "Kid's Collection",  desc: 'Adorable kids jewellery — beti ki shaadi special', slug: 'kids-collection' },
-  '3-0-1': { name: 'Rings',             desc: 'Sweet ring — beti ke engagement pe',             slug: 'rings' },
-  '3-0-2': { name: 'Bridal Jewellery',  desc: 'Bridal set — beti ki shaadi ka sonar din',      slug: 'bridal-jewellery' },
-  '3-0-3': { name: 'Bridal Jewellery',  desc: 'Complete luxury bridal — beti ke liye sabse acha', slug: 'bridal-jewellery' },
+  '3-0-0': { name: "Kid's Collection",  desc: 'Adorable kids jewellery — make her wedding extra special', slug: 'kids-collection' },
+  '3-0-1': { name: 'Rings',             desc: 'A sweet ring — for her engagement day',              slug: 'rings' },
+  '3-0-2': { name: 'Bridal Jewellery',  desc: 'Bridal set — for the golden day of her wedding',    slug: 'bridal-jewellery' },
+  '3-0-3': { name: 'Bridal Jewellery',  desc: 'Complete luxury bridal — only the best for your daughter', slug: 'bridal-jewellery' },
 
-  '3-1-0': { name: "Kid's Collection",  desc: 'Cute kids jewellery — choti si birthday',       slug: 'kids-collection' },
-  '3-1-1': { name: "Kid's Collection",  desc: 'Lovely kids collection — beti ka birthday',     slug: 'kids-collection' },
-  '3-1-2': { name: 'Modern Wear',       desc: 'Modern jewellery — badi beti ka birthday gift', slug: 'modern-wear' },
-  '3-1-3': { name: 'Diamond Magics',    desc: 'Diamonds — beti ka khaas birthday surprise',    slug: 'diamond-magics' },
+  '3-1-0': { name: "Kid's Collection",  desc: 'Cute kids jewellery — for her little birthday',     slug: 'kids-collection' },
+  '3-1-1': { name: "Kid's Collection",  desc: 'Lovely kids collection — celebrate her birthday',   slug: 'kids-collection' },
+  '3-1-2': { name: 'Modern Wear',       desc: 'Modern jewellery — a stylish birthday gift for her', slug: 'modern-wear' },
+  '3-1-3': { name: 'Diamond Magics',    desc: 'Diamonds — a special birthday surprise for her',    slug: 'diamond-magics' },
 
-  '3-2-0': { name: "Kid's Collection",  desc: 'Sweet gift — anniversary pe choti si beti',     slug: 'kids-collection' },
-  '3-2-1': { name: 'Earings',           desc: 'Pretty earrings — beti ke liye anniversary gift', slug: 'earings' },
-  '3-2-2': { name: 'Modern Wear',       desc: 'Modern jewellery — growing up gift for daughter', slug: 'modern-wear' },
-  '3-2-3': { name: 'Necklaces',         desc: 'Elegant necklace — beti ke liye milestone gift', slug: 'necklaces' },
+  '3-2-0': { name: "Kid's Collection",  desc: 'A sweet gift — for your little one on anniversary', slug: 'kids-collection' },
+  '3-2-1': { name: 'Earings',           desc: 'Pretty earrings — an anniversary gift for her',     slug: 'earings' },
+  '3-2-2': { name: 'Modern Wear',       desc: 'Modern jewellery — a milestone gift for your daughter', slug: 'modern-wear' },
+  '3-2-3': { name: 'Necklaces',         desc: 'Elegant necklace — celebrate her milestone in style', slug: 'necklaces' },
 
-  '3-3-0': { name: "Kid's Collection",  desc: 'Surprise gift — beti ko khush karo',            slug: 'kids-collection' },
-  '3-3-1': { name: 'Pendant',           desc: 'Sweet pendant — beti ka no-reason gift',        slug: 'pendant' },
-  '3-3-2': { name: 'Modern Wear',       desc: 'Trendy modern — beti ki pasand ka gift',        slug: 'modern-wear' },
-  '3-3-3': { name: 'Diamond Magics',    desc: 'Diamonds — beti ke liye best always',           slug: 'diamond-magics' },
+  '3-3-0': { name: "Kid's Collection",  desc: 'A surprise gift — just to make her happy',         slug: 'kids-collection' },
+  '3-3-1': { name: 'Pendant',           desc: 'A sweet pendant — a no-reason gift for her',       slug: 'pendant' },
+  '3-3-2': { name: 'Modern Wear',       desc: 'Trendy modern — gifted just the way she likes it', slug: 'modern-wear' },
+  '3-3-3': { name: 'Diamond Magics',    desc: 'Diamonds — because she always deserves the best',  slug: 'diamond-magics' },
 
   // ── MEN / HUSBAND / BROTHER (4) ─────────────────────
-  '4-0-0': { name: "Men's Collection",  desc: 'Elegant men\'s jewellery — shaadi ka tuhfa',    slug: 'mens-collection' },
-  '4-0-1': { name: "Men's Collection",  desc: 'Wedding jewellery for groom — shaan se',        slug: 'mens-collection' },
-  '4-0-2': { name: "Men's Collection",  desc: 'Premium men\'s jewellery — groom ka special',  slug: 'mens-collection' },
-  '4-0-3': { name: "Men's Collection",  desc: 'Luxury groom jewellery — shadi mein sab dekhein', slug: 'mens-collection' },
+  '4-0-0': { name: "Men's Collection",  desc: 'Elegant men\'s jewellery — a wedding gift for him',    slug: 'mens-collection' },
+  '4-0-1': { name: "Men's Collection",  desc: 'Wedding jewellery for the groom — wear it with pride', slug: 'mens-collection' },
+  '4-0-2': { name: "Men's Collection",  desc: 'Premium men\'s jewellery — a special gift for the groom', slug: 'mens-collection' },
+  '4-0-3': { name: "Men's Collection",  desc: 'Luxury groom jewellery — all eyes on him',             slug: 'mens-collection' },
 
-  '4-1-0': { name: "Men's Collection",  desc: 'Men\'s bracelet or chain — birthday pe bhaari',  slug: 'mens-collection' },
-  '4-1-1': { name: "Men's Collection",  desc: 'Stylish men\'s piece — bhai ya husband birthday', slug: 'mens-collection' },
-  '4-1-2': { name: "Men's Collection",  desc: 'Premium men\'s jewellery — uske liye bada gift', slug: 'mens-collection' },
-  '4-1-3': { name: "Men's Collection",  desc: 'Luxury men\'s jewellery — boss level birthday',  slug: 'mens-collection' },
+  '4-1-0': { name: "Men's Collection",  desc: 'Men\'s bracelet or chain — a bold birthday gift',      slug: 'mens-collection' },
+  '4-1-1': { name: "Men's Collection",  desc: 'Stylish men\'s piece — for his birthday',              slug: 'mens-collection' },
+  '4-1-2': { name: "Men's Collection",  desc: 'Premium men\'s jewellery — go big for him',            slug: 'mens-collection' },
+  '4-1-3': { name: "Men's Collection",  desc: 'Luxury men\'s jewellery — a boss-level birthday gift', slug: 'mens-collection' },
 
-  '4-2-0': { name: "Men's Collection",  desc: 'Men\'s jewellery — anniversary pe uske liye',   slug: 'mens-collection' },
-  '4-2-1': { name: "Men's Collection",  desc: 'Gold chain or bracelet — anniversary surprise',  slug: 'mens-collection' },
-  '4-2-2': { name: "Men's Collection",  desc: 'Premium men\'s gift — saal giraah mubarak',     slug: 'mens-collection' },
-  '4-2-3': { name: "Men's Collection",  desc: 'Luxury men\'s piece — because he is special',   slug: 'mens-collection' },
+  '4-2-0': { name: "Men's Collection",  desc: 'Men\'s jewellery — an anniversary gift for him',       slug: 'mens-collection' },
+  '4-2-1': { name: "Men's Collection",  desc: 'Gold chain or bracelet — anniversary surprise for him', slug: 'mens-collection' },
+  '4-2-2': { name: "Men's Collection",  desc: 'Premium men\'s gift — happy anniversary to him',       slug: 'mens-collection' },
+  '4-2-3': { name: "Men's Collection",  desc: 'Luxury men\'s piece — because he is special',          slug: 'mens-collection' },
 
-  '4-3-0': { name: "Men's Collection",  desc: 'Men\'s jewellery — surprise gift for him',      slug: 'mens-collection' },
-  '4-3-1': { name: "Men's Collection",  desc: 'Casual men\'s piece — just because he rocks',   slug: 'mens-collection' },
-  '4-3-2': { name: "Men's Collection",  desc: 'Modern men\'s jewellery — style upgrade',       slug: 'mens-collection' },
-  '4-3-3': { name: "Men's Collection",  desc: 'Premium men\'s gift — no occasion needed',      slug: 'mens-collection' },
+  '4-3-0': { name: "Men's Collection",  desc: 'Men\'s jewellery — a surprise gift for him',           slug: 'mens-collection' },
+  '4-3-1': { name: "Men's Collection",  desc: 'Casual men\'s piece — just because he rocks',          slug: 'mens-collection' },
+  '4-3-2': { name: "Men's Collection",  desc: 'Modern men\'s jewellery — a style upgrade for him',    slug: 'mens-collection' },
+  '4-3-3': { name: "Men's Collection",  desc: 'Premium men\'s gift — no occasion needed',             slug: 'mens-collection' },
 };
 
 const defaultResult = { name: 'Our Bestsellers', desc: 'Curated picks just for you', slug: 'bridal-jewellery' };
@@ -419,10 +409,10 @@ export function AwardsCertifications() {
 ════════════════════════════════════════════════════════ */
 export function JewelleryCareGuide() {
   const tips = [
-    { icon: '🧴', title: 'Cleaning Gold', tips: ['Mild soap + warm water use karo', 'Soft bristle brush se gently scrub karo', 'Chemical cleaners se bachao'] },
-    { icon: '💎', title: 'Diamond Care', tips: ['Lotion lagane ke baad remove karo', 'Alag box mein rakho scratches se bachne ke liye', 'Annual professional cleaning karwao'] },
-    { icon: '📦', title: 'Storage Tips', tips: ['Fabric-lined box mein rakho', 'Direct sunlight se bachao', 'Humidity se door rakho'] },
-    { icon: '🚿', title: "Daily Don'ts", tips: ['Swim karte waqt nikaal lo', 'Gym mein nahi pehno', 'Perfume apply karne ke baad pehno'] },
+    { icon: '🧴', title: 'Cleaning Gold', tips: ['Use mild soap + warm water', 'Gently scrub with a soft bristle brush', 'Avoid chemical cleaners'] },
+    { icon: '💎', title: 'Diamond Care', tips: ['Remove before applying lotion', 'Store separately to avoid scratches', 'Get professional cleaning done annually'] },
+    { icon: '📦', title: 'Storage Tips', tips: ['Store in a fabric-lined box', 'Keep away from direct sunlight', 'Avoid humid environments'] },
+    { icon: '🚿', title: "Daily Don'ts", tips: ['Remove while swimming', 'Do not wear to the gym', 'Wear only after applying perfume'] },
   ];
 
   return (
@@ -456,14 +446,14 @@ export function JewelleryCareGuide() {
 export function FAQSection() {
   const [open, setOpen] = useState(null);
   const faqs = [
-    { q: 'Kya aap custom jewellery design karte ho?', a: 'Haan! Aap apna design sketch laiye ya idea share karo, hamare skilled artisans wahi piece banayenge. Custom orders ke liye 15–21 din lagte hain.' },
-    { q: 'Kya aapka gold BIS hallmarked hai?', a: 'Bilkul. Humara 100% gold BIS certified hai. Har piece ke saath hallmark certificate diya jaata hai jisme purity aur weight clearly mention hota hai.' },
-    { q: 'Return aur exchange policy kya hai?', a: '7 din ke andar unused jewellery wapas ya exchange kar sakte ho. Custom pieces exchange nahi hote. Return ke liye original bill aur box required hai.' },
-    { q: 'Kya home delivery milti hai?', a: 'Haan, pan-India insured delivery available hai. ₹5000+ ke orders pe free delivery milti hai. Shipping 3–7 business days mein complete hoti hai.' },
-    { q: 'EMI facility available hai kya?', a: 'Haan! Major banks ke credit cards pe 3, 6, 12 aur 24 month ki no-cost EMI available hai. Store visit ya WhatsApp pe inquire karo.' },
-    { q: 'Diamond certified hai kya?', a: 'Hamare solitaire diamonds GIA ya IGI certified hain. Har diamond ke saath grading report milta hai jisme 4Cs (Cut, Color, Clarity, Carat) detail mein hote hain.' },
-    { q: 'Kya aap old jewellery exchange karte ho?', a: 'Haan! Aapki purani gold ya diamond jewellery current market rate pe exchange kar sakte ho. Fair valuation ke liye store pe laiye.' },
-    { q: 'Repair aur polishing service milti hai?', a: 'Haan! Riddhi Jewellers se kharide gaye har piece ke liye lifetime free polishing, cleaning aur minor repair service milti hai.' },
+    { q: 'Do you make custom jewellery designs?', a: 'Yes! Bring your design sketch or share your idea, and our skilled artisans will craft that exact piece for you. Custom orders take 15–21 days.' },
+    { q: 'Is your gold BIS hallmarked?', a: 'Absolutely. 100% of our gold is BIS certified. Every piece comes with a hallmark certificate clearly mentioning the purity and weight.' },
+    { q: 'What is your return and exchange policy?', a: 'Unused jewellery can be returned or exchanged within 7 days. Custom pieces are not eligible for exchange. Original bill and box are required for returns.' },
+    { q: 'Do you offer home delivery?', a: 'Yes, pan-India insured delivery is available. Orders above ₹5,000 get free delivery. Shipping is completed within 3–7 business days.' },
+    { q: 'Is EMI facility available?', a: 'Yes! No-cost EMI is available for 3, 6, 12, and 24 months on major bank credit cards. Inquire at the store or via WhatsApp.' },
+    { q: 'Are your diamonds certified?', a: 'Our solitaire diamonds are GIA or IGI certified. Every diamond comes with a grading report detailing the 4Cs — Cut, Color, Clarity, and Carat.' },
+    { q: 'Do you exchange old jewellery?', a: 'Yes! You can exchange your old gold or diamond jewellery at the current market rate. Visit our store for a fair valuation.' },
+    { q: 'Do you offer repair and polishing services?', a: 'Yes! Every piece purchased from Riddhi Jewellers comes with lifetime free polishing, cleaning, and minor repair services.' },
   ];
 
   return (
@@ -580,10 +570,11 @@ export function FestivalCalendar() {
    10. BLOG PREVIEW CARDS
 ════════════════════════════════════════════════════════ */
 export function BlogPreview() {
+  const navigate = useNavigate();
   const posts = [
-    { tag: 'Buying Guide', title: 'How to Choose the Perfect Engagement Ring', excerpt: 'Budget, stone shape, metal type — puri guide ek jagah. Pehli baar buyers ke liye must read.', date: 'Mar 2025', readTime: '5 min read', slug: 'engagement-ring-guide' },
-    { tag: 'Investment', title: 'Gold vs Diamond: Which is a Better Investment?', excerpt: 'Dono ke pros aur cons, long-term value, aur expert ki salah — complete analysis.', date: 'Feb 2025', readTime: '7 min read', slug: 'gold-vs-diamond' },
-    { tag: 'Care Tips', title: 'How to Keep Your Jewellery Sparkling at Home', excerpt: 'Ghar pe hi professional-level cleaning karo. Simple tips jo har koi follow kar sakta hai.', date: 'Jan 2025', readTime: '3 min read', slug: 'jewellery-care-tips' },
+    { tag: 'Buying Guide', title: 'How to Choose the Perfect Engagement Ring', excerpt: 'Budget, stone shape, metal type — a complete guide in one place. A must-read for first-time buyers.', date: 'Mar 2025', readTime: '5 min read', slug: 'engagement-ring-guide' },
+    { tag: 'Investment', title: 'Gold vs Diamond: Which is a Better Investment?', excerpt: 'Pros and cons of both, long-term value, and expert advice — a complete analysis.', date: 'Feb 2025', readTime: '7 min read', slug: 'gold-vs-diamond' },
+    { tag: 'Care Tips', title: 'How to Keep Your Jewellery Sparkling at Home', excerpt: 'Get professional-level cleaning done at home. Simple tips that anyone can follow.', date: 'Jan 2025', readTime: '3 min read', slug: 'jewellery-care-tips' },
   ];
 
   return (
@@ -594,7 +585,9 @@ export function BlogPreview() {
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '24px', maxWidth: '1100px', margin: '0 auto' }}>
         {posts.map((p, i) => (
-          <div key={i} style={{ background: 'var(--card-bg)', border: '1.5px solid #e8d9c0', borderRadius: '16px', overflow: 'hidden', cursor: 'pointer', transition: 'transform 0.3s, border-color 0.3s' }}
+          <div key={i}
+            onClick={() => navigate(`/blog/${p.slug}`)} 
+            style={{ background: 'var(--card-bg)', border: '1.5px solid #e8d9c0', borderRadius: '16px', overflow: 'hidden', cursor: 'pointer', transition: 'transform 0.3s, border-color 0.3s' }}
             onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-6px)'; e.currentTarget.style.borderColor = '#b8860b'; }}
             onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.borderColor = '#e8d9c0'; }}
           >
@@ -655,14 +648,13 @@ export function VirtualTryOnTeaser() {
 ════════════════════════════════════════════════════════ */
 export function DeliveryInfo() {
   const features = [
-    { icon: '🔒', title: 'Insured Shipping', desc: 'Har shipment fully insured hai. Damage ya loss ki koi tension nahi.' },
-    { icon: '📦', title: 'Premium Packaging', desc: 'Luxury gift box mein deliver hota hai — ready to gift right out of the box.' },
-    { icon: '🚚', title: 'Pan-India Delivery', desc: '3–7 business days mein deliver. Metro cities mein express option available.' },
-    { icon: '🆓', title: 'Free Shipping', desc: '₹5,000 aur usse zyada ke orders pe shipping bilkul free hai.' },
-    { icon: '📍', title: 'Live Tracking', desc: 'Order dispatch hone ke baad real-time tracking link SMS pe bheja jaata hai.' },
-    { icon: '↩️', title: 'Easy Returns', desc: '7 din ke andar hassle-free return. Pickup bhi ghar se arrange ho sakta hai.' },
+    { icon: '🔒', title: 'Insured Shipping', desc: 'Every shipment is fully insured. No worries about damage or loss.' },
+    { icon: '📦', title: 'Premium Packaging', desc: 'Delivered in a luxury gift box — ready to gift right out of the box.' },
+    { icon: '🚚', title: 'Pan-India Delivery', desc: 'Delivered in 3–7 business days. Express options available for metro cities.' },
+    { icon: '🆓', title: 'Free Shipping', desc: 'Enjoy completely free shipping on all orders above ₹5,000.' },
+    { icon: '📍', title: 'Live Tracking', desc: 'A real-time tracking link is sent via SMS once your order is dispatched.' },
+    { icon: '↩️', title: 'Easy Returns', desc: 'Hassle-free returns within 7 days. Home pickup can also be arranged.' },
   ];
-
   return (
     <section style={{ background: '#faf8f5', color: '#222', padding: '100px 5%' }}>
       <div style={{ textAlign: 'center', marginBottom: '60px' }}>
@@ -847,7 +839,7 @@ export function BeforeAfterSection() {
         ))}
       </div>
       <div style={{ textAlign: 'center', marginTop: '48px' }}>
-        <p style={{ color: '#666', marginBottom: '20px', fontSize: '0.9rem' }}>Aapka bhi custom piece banana chahte ho?</p>
+        <p style={{ color: '#666', marginBottom: '20px', fontSize: '0.9rem' }}>Want to create your own custom piece?</p>
         <a href="/contact" className="btn btn-primary">Start Your Custom Order →</a>
       </div>
     </section>

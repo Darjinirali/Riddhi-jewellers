@@ -526,7 +526,7 @@ export default function Home() {
           <div className="sh" style={{ marginBottom: '48px' }}>
             <p className="sh-eyebrow">Find Your Perfect Piece</p>
             <h2 className="sh-title">Shop by <em>Occasion</em></h2>
-            {selectedOccasion && <p style={{ marginTop: '16px', color: 'var(--ink-4)', fontSize: '0.8rem', fontFamily: 'var(--sans)' }}>Neeche dekho — <strong style={{ color: 'var(--gold-2)' }}>{occasions.find(o => o.slug === selectedOccasion)?.label}</strong> ke liye best collections! 👇</p>}
+            {selectedOccasion && <p style={{ marginTop: '16px', color: 'var(--ink-4)', fontSize: '0.8rem', fontFamily: 'var(--sans)' }}>scroll down— <strong style={{ color: 'var(--gold-2)' }}>{occasions.find(o => o.slug === selectedOccasion)?.label}</strong> best collections! 👇</p>}
           </div>
         </Reveal>
         <Reveal delay={120}>
@@ -549,7 +549,7 @@ export default function Home() {
         <Reveal>
           <div className="sh">
             <p className="sh-eyebrow">{selectedOccasion ? `${occasions.find(o => o.slug === selectedOccasion)?.label} Collections` : 'Our Specialties'}</p>
-            <h2 className="sh-title">{selectedOccasion ? <>{occasions.find(o => o.slug === selectedOccasion)?.icon} <em>{occasions.find(o => o.slug === selectedOccasion)?.label}</em> ke liye Best</> : <>Crafted for Your<br /><em>Special Moments</em></>}</h2>
+            <h2 className="sh-title">{selectedOccasion ? <>{occasions.find(o => o.slug === selectedOccasion)?.icon} <em>{occasions.find(o => o.slug === selectedOccasion)?.label}</em> Best collection</> : <>Crafted for Your<br /><em>Special Moments</em></>}</h2>
           </div>
         </Reveal>
         {selectedOccasion && <p className="filter-count"><strong>{filteredCollections.length}</strong> collections found for <strong>{occasions.find(o => o.slug === selectedOccasion)?.label}</strong></p>}
@@ -557,7 +557,7 @@ export default function Home() {
           <Reveal>
             <div style={{ textAlign: 'center', padding: '60px 20px' }}>
               <p style={{ fontSize: '3rem', marginBottom: '16px' }}>🔍</p>
-              <p style={{ fontFamily: 'var(--serif)', fontSize: '1.3rem', color: 'var(--ink-2)', marginBottom: '28px' }}>Koi collection nahi mili</p>
+              <p style={{ fontFamily: 'var(--serif)', fontSize: '1.3rem', color: 'var(--ink-2)', marginBottom: '28px' }}>no collection found</p>
               <button onClick={() => setSelectedOccasion(null)} className="btn btn-outline">Sab Collections Dekho →</button>
             </div>
           </Reveal>
@@ -581,7 +581,7 @@ export default function Home() {
         )}
         {selectedOccasion && filteredCollections.length > 0 && (
           <Reveal delay={200}>
-            <div style={{ textAlign: 'center', marginTop: '48px' }}><button onClick={() => setSelectedOccasion(null)} className="btn btn-outline">← Sab Collections Dekho</button></div>
+            <div style={{ textAlign: 'center', marginTop: '48px' }}><button onClick={() => setSelectedOccasion(null)} className="btn btn-outline">← see all collections</button></div>
           </Reveal>
         )}
       </section>
@@ -832,20 +832,19 @@ const occasions = [
   { icon:'🎁', label:'Gift',        slug:'gift'        },
 ];
 const reviews = [
-  { name:'Priya Mehta',   stars:5, occasion:'Bridal Jewellery, 2023', text:'Riddhi Jewellers ne meri shaadi ke liye jo bridal set banaya, woh bilkul mere sapno jaisa tha. Quality aur service dono exceptional hain!' },
-  { name:'Ankit Shah',    stars:5, occasion:'Anniversary Gift',        text:'Anniversary pe wife ke liye diamond necklace liya. Hallmark certification se full trust mila. Highly recommend!' },
-  { name:'Deepa Verma',   stars:5, occasion:'Custom Ring, 2024',       text:'Custom engagement ring itna easy tha design karna! Team ne exact vision samjha aur beautiful piece deliver kiya.' },
-  { name:'Rohan Joshi',   stars:5, occasion:'Gold Bangles',            text:'29 saal purana brand, aur trust dikhta hai. Pure 22K gold, proper weight, BIS hallmark — no compromise.' },
-  { name:'Kavya Patel',   stars:5, occasion:'Bridal Set, 2024',        text:'Ek hi jagah sab mila — necklace, bangles, earrings, maang tikka. Sab perfect tha. Shukriya Riddhi Jewellers!' },
-  { name:'Manish Desai',  stars:5, occasion:'Solitaire Ring',          text:'Staff bahut helpful, koi pressure nahi. GIA certified diamond clearly explain kiya. Confident feel hua.' },
+  { name:'Priya Mehta',   stars:5, occasion:'Bridal Jewellery, 2023', text:'The bridal set Riddhi Jewellers crafted for my wedding was exactly like I had dreamed. The quality and service were both exceptional!' },
+  { name:'Ankit Shah',    stars:5, occasion:'Anniversary Gift',        text:'Bought a diamond necklace for my wife on our anniversary. The hallmark certification gave us complete confidence. Highly recommend!' },
+  { name:'Deepa Verma',   stars:5, occasion:'Custom Ring, 2024',       text:'Designing a custom engagement ring was so easy! The team understood my exact vision and delivered a truly beautiful piece.' },
+  { name:'Rohan Joshi',   stars:5, occasion:'Gold Bangles',            text:'A 29-year-old brand, and the trust really shows. Pure 22K gold, proper weight, BIS hallmark — absolutely no compromise.' },
+  { name:'Kavya Patel',   stars:5, occasion:'Bridal Set, 2024',        text:'Found everything in one place — necklace, bangles, earrings, maang tikka. Everything was perfect. Thank you Riddhi Jewellers!' },
+  { name:'Manish Desai',  stars:5, occasion:'Solitaire Ring',          text:'The staff was very helpful with zero pressure. They clearly explained the GIA certified diamond. I felt completely confident.' },
 ];
 const customerPhotos = [
-  { image:'https://www.sneharateria.com/cdn/shop/articles/theweddingcorp_1200x1200.png?v=1676527615', caption:'Bridal look — Riya K.' },
-  { image:'https://priyaasi.com/cdn/shop/files/JS-PR-10391-1_grande.jpg?v=1704893163',               caption:'Diamond set — Meera S.' },
-  { image:'https://images.jdmagicbox.com/quickquotes/images_main/-wpb08nw7.jpg',                     caption:'Gold heritage — Pooja V.' },
-  { image:'https://www.karpagamjewellers.com/wp-content/uploads/2024/05/Traditional-Gold-Jewellery-Collections.jpg', caption:'Traditional gold — Ananya M.' },
-  { image:'https://www.giva.co/cdn/shop/articles/1_407_-min.jpg?v=1758624615',                       caption:'Contemporary — Sakshi R.' },
-  { image:'https://www.sneharateria.com/cdn/shop/articles/theweddingcorp_1200x1200.png?v=1676527615', caption:'Anniversary gift — Neha D.' },
+  { image:'https://i.pinimg.com/736x/90/db/b7/90dbb77ac77514e0bec4f447a469bfd1.jpg', caption:'Bridal look — Riya K.' },
+  { image:'https://i.pinimg.com/1200x/8c/e9/01/8ce901930dd44a47f568504f7e824ba1.jpg',               caption:'Diamond set — Meera S.' },
+  { image:'https://i.pinimg.com/1200x/d7/67/45/d7674572ca9ea1737f6cc29f9bb226c0.jpg',                     caption:'Gold heritage — Pooja V.' },
+  { image:'https://i.pinimg.com/736x/47/20/2a/47202a46a6d17a553213a8318c23af73.jpg', caption:'Traditional gold — Ananya M.' },
+  { image:'https://i.pinimg.com/1200x/c4/e7/ea/c4e7eadf822867277f31c79137732a9d.jpg',                       caption:'Contemporary — Sakshi R.' },
 ];
 const pressLogos = [
   { name:'BIS Hallmark',    note:'Certified'       },

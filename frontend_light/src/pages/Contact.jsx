@@ -417,7 +417,7 @@ export default function Contact() {
             </div>
 
             {[
-              { icon: '📍', title: 'Address', lines: ['Jamnagar, Gujarat, India'] },
+              { icon: '📍', title: 'Address', lines: ['Ahmedabad, Gujarat, India'] },
               { icon: '📞', title: 'Phone', lines: ['+91 91042 61433'] },
               { icon: '✉️', title: 'Email', lines: ['info@riddhijewellers.com'] },
               { icon: '🕐', title: 'Store Hours', lines: ['Mon – Sat: 10:00 AM – 8:00 PM', 'Sunday: Closed'] },

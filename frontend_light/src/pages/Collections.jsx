@@ -194,11 +194,14 @@ export default function Collections() {
     axios.get('/api/collections')
       .then(async (r) => {
         const data = r.data;
+        console.log('RAW API DATA:', data); // debug
         let cols = [];
         if (Array.isArray(data)) cols = data;
         else if (data?.collections) cols = data.collections;
         else if (data?.data) cols = data.data;
-        else cols = demoCollections;
+        else { setCollections(demoCollections); setLoading(false); return; }
+
+        if (cols.length === 0) { setCollections(demoCollections); setLoading(false); return; }
 
         // Har collection ke liye product count fetch karo
         const withCounts = await Promise.all(

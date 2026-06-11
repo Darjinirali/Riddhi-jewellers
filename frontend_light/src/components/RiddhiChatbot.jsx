@@ -1,11 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
 
-const SYSTEM_PROMPT = `Tu Riddhi Jewellers ka AI assistant hai — "Riddhi jewellers" naam se. Tu ek helpful, warm aur knowledgeable jewellery expert hai.
+const SYSTEM_PROMPT = `You are Riddhi, the AI assistant for Riddhi Jewellers — helpful, warm and knowledgeable jewellery expert.
 
 STORE INFO:
-- Naam: Riddhi Jewellers
+- Name: Riddhi Jewellers
 - Location: Ahmedabad, Gujarat
-- Experience: 29+ saal (Est. 1995)
+- Experience: 29+ years (Est. 1995)
 - Timing: Mon-Sat 10AM-8PM, Sun 11AM-6PM
 - Phone: +91 9104261433
 - Email: info@riddhijewellers.com
@@ -15,23 +15,23 @@ STORE INFO:
 COLLECTIONS:
 - Bridal Elegance: Complete bridal sets, necklace, bangles, earrings, maang tikka
 - Diamond Luxury: GIA/IGI certified diamonds, solitaire rings, pendants
-- Gold Heritage: Pure 22K aur 18K gold jewellery, traditional designs
+- Gold Heritage: Pure 22K and 18K gold jewellery, traditional designs
 - Contemporary Style: Modern, fusion, everyday wear jewellery
 
 GOLD RATES (indicative):
-- 22K Gold: ~7,350 per gram
-- 18K Gold: ~6,010 per gram
-- Note: Exact rate ke liye store contact karo
+- 22K Gold: ~₹7,350 per gram
+- 18K Gold: ~₹6,010 per gram
+- Note: Contact store for exact rate
 
 SERVICES:
-- Custom jewellery design (15-21 din)
+- Custom jewellery design (15-21 days)
 - BIS hallmark certification
 - Lifetime free polishing & cleaning
 - 7-day easy returns
-- Pan-India insured delivery (free above 5000)
+- Pan-India insured delivery (free above ₹5000)
 - Old jewellery exchange
-- EMI available (3,6,12,24 months no-cost)
-- Personal consultation (book kar sakte ho)
+- EMI available (3, 6, 12, 24 months no-cost)
+- Personal consultation available
 
 CERTIFICATIONS:
 - BIS Hallmark certified
@@ -41,27 +41,27 @@ CERTIFICATIONS:
 OCCASIONS: Wedding, Engagement, Anniversary, Birthday, Graduation, Gift
 
 RULES:
-- Hinglish mein baat kar (Hindi + English mix) — friendly aur warm tone
-- Short aur helpful replies do (2-4 lines max)
-- Agar koi specific product pooche toh collections suggest karo
-- Appointment ya custom order ke liye phone/WhatsApp suggest karo: +91 99999 99999
-- Gold rate pooche toh batao par "store se confirm karo" bolo
-- Kabhi bhi fake information mat do
-- Agar kuch nahi pata toh store contact karne ko kaho`;
+- Always respond in English only
+- Keep replies short and helpful (2-4 lines max)
+- Suggest relevant collections for product queries
+- For appointments or custom orders, suggest calling: +91 9104261433
+- For gold rates, share indicative price but say "please confirm with store"
+- Never give fake information
+- If unsure, ask customer to contact the store`;
 
 const QUICK_REPLIES = [
-  '💍 Bridal jewellery chahiye',
-  '💎 Diamond rings dikhao',
-  '🥇 Gold rate kya hai?',
-  '✨ Custom design banana hai',
-  '📦 Delivery kaise hogi?',
-  '↩️ Return policy kya hai?',
+  '💍 Show Bridal Jewellery',
+  '💎 Show Diamond Rings',
+  '🥇 What is the Gold Rate?',
+  '✨ I want a Custom Design',
+  '📦 How is Delivery done?',
+  '↩️ What is the Return Policy?',
 ];
 
 export default function RiddhiChatbot() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { role: 'assistant', content: 'Namaste! 🙏 Main Riddhi hun, Riddhi Jewellers ki AI assistant. Aapki kaise madad kar sakti hun aaj?' }
+    { role: 'assistant', content: 'Namaste! 🙏 I am Riddhi, AI Assistant of Riddhi Jewellers. How can I help you today?' }
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -100,10 +100,10 @@ export default function RiddhiChatbot() {
       });
 
       const data = await response.json();
-      const reply = data.content?.[0]?.text || 'Maafi chahti hun, kuch problem aayi. Please store pe call karein: +91 99999 99999';
+      const reply = data.content?.[0]?.text || 'Sorry, something went wrong. Please call us at: +91 9104261433 🙏';
       setMessages([...newMessages, { role: 'assistant', content: reply }]);
     } catch {
-      setMessages([...newMessages, { role: 'assistant', content: 'Thodi technical problem aayi hai. Please +91 99999 99999 pe call karein ya WhatsApp karein! 🙏' }]);
+      setMessages([...newMessages, { role: 'assistant', content: 'A technical issue occurred. Please call or WhatsApp us at +91 9104261433! 🙏' }]);
     } finally {
       setLoading(false);
     }
@@ -159,7 +159,7 @@ export default function RiddhiChatbot() {
                   padding: '9px 13px',
                   borderRadius: m.role === 'user' ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
                   background: m.role === 'user' ? '#b8860b' : '#f0e8d8',
-                  color: m.role === 'user' ? '#1a1a1a' : '#2c2c2c',   // ← Color Changed
+                  color: m.role === 'user' ? '#1a1a1a' : '#2c2c2c',
                   fontSize: '0.85rem',
                   lineHeight: 1.6,
                   border: m.role === 'assistant' ? '1px solid #2a2a2a' : 'none',
@@ -191,7 +191,7 @@ export default function RiddhiChatbot() {
                     border: '1px solid #e8d9c0',
                     borderRadius: '20px',
                     padding: '7px 13px',
-                    color: '#444',                    // ← Color Changed
+                    color: '#444',
                     fontSize: '0.78rem',
                     cursor: 'pointer',
                     textAlign: 'left',
@@ -213,7 +213,7 @@ export default function RiddhiChatbot() {
               value={input}
               onChange={e => setInput(e.target.value)}
               onKeyDown={handleKey}
-              placeholder="Kuch poochiye..."
+              placeholder="Ask something..."
               disabled={loading}
               style={{ flex: 1, background: '#f0e8d8', border: '1px solid #e8d9c0', borderRadius: '20px', padding: '9px 14px', color: '#1a1a1a', fontSize: '0.85rem', outline: 'none', minWidth: 0 }}
             />
@@ -228,7 +228,7 @@ export default function RiddhiChatbot() {
                 display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.9rem',
                 transition: 'all 0.2s',
               }}>➤</button>
-            </div>
+          </div>
 
           <div style={{ textAlign: 'center', padding: '5px', background: '#f8f2e8', flexShrink: 0 }}>
             <span style={{ color: '#444', fontSize: '0.62rem' }}>Powered by Groq AI • Riddhi Jewellers</span>
@@ -250,7 +250,7 @@ export default function RiddhiChatbot() {
         }}
         onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.1)'}
         onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
-        title="Riddhi se baat karein"
+        title="Chat with Riddhi"
       >
         {open ? <span style={{ color: '#b8860b', fontSize: '1.1rem' }}>✕</span> : '💬'}
       </button>

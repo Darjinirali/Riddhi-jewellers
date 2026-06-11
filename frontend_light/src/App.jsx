@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
@@ -19,11 +20,12 @@ import VerifyOTP from './pages/VerifyOTP';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import Checkout from './pages/Checkout';
-import About from './pages/About';      // ✅ ADD
-import Contact from './pages/Contact'; 
+import About from './pages/About';
+import Contact from './pages/Contact';
 import AdminMessages from './pages/admin/AdminMessages';
 import UserOrders from './pages/user/UserOrders';
 import UserProfile from './pages/user/UserProfile';
+import BlogPost from './pages/BlogPost';
 
 import { AdminLayout } from './pages/admin/AdminDashboard';
 import AdminDashboard from './pages/admin/AdminDashboard';
@@ -33,6 +35,15 @@ import { AdminOrders, AdminUsers } from './pages/admin/AdminOrdersUsers';
 
 const noNavRoutes = ['/login', '/register', '/verify-otp', '/forgot-password', '/reset-password'];
 
+// ✅ ScrollToTop component
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, [pathname]);
+  return null;
+}
+
 function AppContent() {
   const path = window.location.pathname;
   const isAdmin = path.startsWith('/admin');
@@ -40,6 +51,7 @@ function AppContent() {
 
   return (
     <>
+      <ScrollToTop />  {/* ✅ Har page pe top se shuru */}
       {!isAdmin && !hideNav && <Navbar />}
       {!isAdmin && <CartSidebar />}
       <Toaster position="top-right" toastOptions={{
@@ -58,13 +70,14 @@ function AppContent() {
         <Route path="/verify-otp" element={<VerifyOTP />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/about" element={<About />} />      {/* ✅ ADD */}
-        <Route path="/contact" element={<Contact />} />  {/* ✅ ADD */}
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
 
         {/* Protected */}
         <Route path="/checkout" element={<PrivateRoute><Checkout /></PrivateRoute>} />
         <Route path="/user/orders" element={<PrivateRoute><UserOrders /></PrivateRoute>} />
         <Route path="/user/profile" element={<PrivateRoute><UserProfile /></PrivateRoute>} />
+        <Route path="/blog/:slug" element={<BlogPost />} />
 
         {/* Admin */}
         <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
@@ -73,22 +86,19 @@ function AppContent() {
           <Route path="collections" element={<AdminCollections />} />
           <Route path="orders" element={<AdminOrders />} />
           <Route path="users" element={<AdminUsers />} />
-          <Route path="messages" element={<AdminMessages />} /> 
+          <Route path="messages" element={<AdminMessages />} />
         </Route>
       </Routes>
 
       {!isAdmin && !hideNav && <Footer />}
-      
-      {!isAdmin && <RiddhiChatbot />}  {/* ← yeh add karo */}
+      {!isAdmin && <RiddhiChatbot />}
     </>
-    
   );
 }
 
 export default function App() {
   return (
     <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-
       <AuthProvider>
         <CartProvider>
           <AppContent />

@@ -4,7 +4,7 @@ const Collection = require('../models/Collection');
 // GET /api/collections
 exports.getCollections = async (req, res) => {
   try {
-    const collections = await Collection.find({ isActive: true });
+    const collections = await Collection.find();
     res.json(collections);
   } catch (err) { res.status(500).json({ message: err.message }); }
 };
