@@ -6,7 +6,7 @@ export default function AdminMessages() {
 
   const fetchMessages = async () => {
     try {
-      const res  = await fetch('/api/contact');
+      fetch(`${import.meta.env.VITE_API_URL}/api/contact`);
       const data = await res.json();
       setMessages(data);
     } catch (err) {
